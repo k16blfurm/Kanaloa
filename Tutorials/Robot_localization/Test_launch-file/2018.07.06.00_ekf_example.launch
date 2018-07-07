@@ -1,6 +1,6 @@
 <launch>
 
-<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
+    <node pkg="robot_localization" type="ekf_localization_node" name="ekf_se" clear_params="true">
     <rosparam command="load" file="$(find robot_localization)/params/ekf_template.yaml" />
 
       <param name="frequency" value="10"/>  
@@ -69,7 +69,7 @@
 
     </node>
 
-	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_se" respawn="true" 		output="screen"/>
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_se" respawn="true" output="screen"/>
 
 	<param name="frequency" value="30"/>
 	<param name="delay" value="3.0"/>
@@ -79,7 +79,7 @@
 	<param name="broadcast_utm_transform" value="true"/>
 	<param name="publish_filtered_gps" value="true"/>
 	
-	</node>
+     </node>
 
 
 </launch>
