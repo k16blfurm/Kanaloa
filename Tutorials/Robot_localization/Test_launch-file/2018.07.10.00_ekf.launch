@@ -78,7 +78,7 @@
       <param name="base_link_frame" value="base_link"/>
       <param name="world_frame" value="map"/>
     
-      <param name="odometry/gps"
+      <param name="odometry/gps"/>
       <param name="imu0" value="/imu/data"/> 
 
       <rosparam param="imu0_config">[false, false, false, 
