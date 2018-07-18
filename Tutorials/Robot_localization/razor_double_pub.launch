@@ -1,8 +1,16 @@
 <launch>
   <arg name="razor_config_file" default="$(find razor_imu_9dof)/config/my_razor.yaml"/>
+
   <node pkg="razor_imu_9dof" type="imu_node.py" name="imu_node0" output="screen">
     <rosparam file="$(arg razor_config_file)" command="load"/>
 	<param name="port" value="/dev/imu1"/>	
 <remap from="imu" to="imu0"/>
   </node>
+
+<node pkg="razor_imu_9dof" type="imu_node.py" name="imu_node1" output="screen">
+    <rosparam file="$(arg razor_config_file)" command="load"/>
+	<param name="port" value="/dev/imu2"/>	
+<remap from="imu" to="imu1"/>
+  </node>
+
 </launch>
