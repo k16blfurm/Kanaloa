@@ -136,7 +136,8 @@ void setup() {
   pinMode(armReelKillPin, OUTPUT);
 
   // Set serial baud rate 
-  Serial.begin(9600);
+  //Serial.begin(9600); //If connected to a laptop.
+  Serial.begin(57600); //If connected to onboard computer
 }
 
 void loop() {
@@ -291,8 +292,7 @@ void motormap(int Q1, int Q2, int Q3, int Q4){
       if (Q3Out <= neutral+2 && Q3Out >=neutral-2) { Q3Out = neutral; }
       if (Q4Out <= neutral+2 && Q4Out >=neutral-2) { Q4Out = neutral; }
       }
-    Serial.println(Q1Out);
-    //Serial.println(voltMain);
+      
     // Output to motor drivers
        pwm.setPWM(Q1Pin,0,Q1Out);
        pwm.setPWM(Q2Pin,0,Q2Out);
