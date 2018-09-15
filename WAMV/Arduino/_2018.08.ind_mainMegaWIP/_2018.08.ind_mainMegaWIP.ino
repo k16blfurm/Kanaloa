@@ -35,6 +35,8 @@ const byte yellowLightPin=37;   // digital out to yellow safety light relay (HIG
 const byte greenLightPin=38;    // digital out to green safety light relay (HIGH to turn on, LOW to turn off)
 const byte thrusterKillPin=16;  // digital out to thruster kill switch
 const byte armReelKillPin=18;   // digital out to arm-reel kill switch
+const byte statePin = 10;       // Digital out to kill-switch Arduino in high current box (HIGH for autonomous, LOW for manual)
+
 /*The pin values for yellowLight-armReal are made up*/
 const byte hbridgepins[16]={16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31}; //Change as needed
 //Every 4 values of array corresponds to 1 set of H-bridge connections to motor controllers (first 4 go to Q1, last 4 go to Q4), used for H-bridge functions
@@ -142,6 +144,7 @@ void setup() {
   pinMode(ch8Pin, INPUT); 
   pinMode(thrusterKillPin, OUTPUT);
   pinMode(armReelKillPin, OUTPUT);
+  pinMode(statePin, OUTPUT);
 
   for(int pin=0;pin<sizeof(hbridgepins)/sizeof(hbridgepins[0]); pin++){
     pinMode(hbridgepins[pin],OUTPUT); 
@@ -172,7 +175,10 @@ void loop() {
   // ====================
 
   if (modeRead<=manualPWM) {  // if WAMV is in manual mode
-
+    
+    // Send WAM-V state to kill-switch Arduino 
+    digitalWrite(statePin, LOW);          // LOW means WAM-V is in manual-control state
+   
     // Set safety light
     digitalWrite(yellowLightPin,HIGH);    // turn on yellow safety light
     digitalWrite(greenLightPin,LOW);      // turn off green safety light
@@ -226,11 +232,16 @@ void loop() {
   // ====================
 
   else {
+    // Send WAM-V state to kill-switch Arduino 
+    digitalWrite(statePin, HIGH);         // HIGH means WAM-V is in autonomous state
+    
     // Set safety light
     digitalWrite(yellowLightPin,LOW);     // turn off yellow safety light
     digitalWrite(greenLightPin,HIGH);     // turn on green safety light
+    
     //Send signals from autonomous source to motors.
     motormap(autoQ1,autoQ2,autoQ3,autoQ4,Q1Last,Q2Last,Q3Last,Q4Last);
+    
     //Store previous values
     Q1Last=autoQ1;
     Q2Last=autoQ2;
