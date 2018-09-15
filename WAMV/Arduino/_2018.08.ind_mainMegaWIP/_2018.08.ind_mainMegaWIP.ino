@@ -50,7 +50,8 @@ const byte hbridgepins[16]={16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31}; //
 
 //States checker
 int modeRead; //Checks whether the boat is in automatic or manual mode
-int voltMain; //Checks the voltage from the main battery
+int voltMain; //Checks the voltage from the main battery (w/o voltage divider)
+float instantVoltBat; //Instantaneous voltage from Battery w/ Voltage divider
 
 
 //Transmitter values
@@ -258,10 +259,11 @@ void loop() {
 float batteryRead(){
   // Main battery voltage reader
   float voltMainBit = analogRead(voltMainPin);      // voltage on voltMainPin [bit]
-  float mainVolt = voltMainBit *(25.0/1023.0);         // voltage on voltMainPin [V] Was 21.0/1024.0 /*This will need to be changed. This thing will be reading 50V, currently it is scaled to read 15V).
-  voltMainMsg.data = mainVolt;                      // set voltMain message
+  float Voltdivide = voltMainBit * (4.54/1023.0);   // voltage on voltMainPin [V] Was 21.0/1024.0 /*This will need to be changed. This thing will be reading 50V, currently it is scaled to read 15V).
+  instantVoltBat = Voltdivide * (9980/10976);       //voltage divider function
+  voltMainMsg.data = instantVoltBat;                // set voltMain message
   voltMainPub.publish( &voltMainMsg);               // publish voltMain topic
-  return mainVolt;
+  return instantVoltBat;
 }
 
 
